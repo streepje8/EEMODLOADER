@@ -1,4 +1,4 @@
-package com.streep.EEMODLOADER.Utils;
+package com.streep.EEMODLOADER.utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

@@ -5,11 +5,18 @@ api-version: 1.18
 load: STARTUP
 author: streepje8
 website: https://github.com/streepje8/EEMODLOADER
-main: com.streep.EEMODLOADER.core.Main
+main: com.streep.EEMODLOADER.core.EEMODLOADER
+libraries:
+   - org.json:json:20220320
 commands:
  version:
   description: Check The Loader Version.
   permission: EEMODLOADER.version
+  permission-message: You do not have permission to use this command.
+  usage: "/<command>"
+ test:
+  description: Test Command
+  permission: EEMODLOADER.test
   permission-message: You do not have permission to use this command.
   usage: "/<command>"
 permissions:

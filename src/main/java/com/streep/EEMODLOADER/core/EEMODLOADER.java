@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginLoadOrder;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.annotation.plugin.Description;
@@ -19,15 +20,23 @@ import com.streep.EEMODLOADER.commands.core.Command;
 @LoadOn(loadOn = PluginLoadOrder.STARTUP)
 @Author(name = "streepje8")
 @Website(url = "https://github.com/streepje8/EEMODLOADER")
-public class Main extends JavaPlugin {
+public class EEMODLOADER extends JavaPlugin {
 
 	private final List<Command> commands = Arrays.asList(new Command[]{
 			new Command("version", new VersionHandler())
 	});
 	
+	public static EEMODLOADER plugin;
+	public EESettings settings = new EESettings();
+	
 	@Override
 	public void onEnable() {
+		plugin = this;
 		getLogger().info("Starting EE MOD LOADER");
+		if(!getDataFolder().exists()) {
+			getDataFolder().mkdirs();
+		}
+		settings.load();
 	}
 	
 	@Override
@@ -38,6 +47,10 @@ public class Main extends JavaPlugin {
 	public boolean onCommand(CommandSender  sender, org.bukkit.command.Command command, String label, String[] args) {
 	    for(Command cmd : commands) {
 	    	cmd.execute(sender, command, label, args);
+	    }
+	    if(command.getName().equalsIgnoreCase("test")) {
+	    	settings.save();
+	    	((Player)sender).getInventory().addItem(settings.testItem.toItemStack());
 	    }
 		return true;
 	}
