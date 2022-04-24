@@ -1,0 +1,20 @@
+name: EEMODLOADER
+version: 1.0.0
+description: The EE Server Side Mod Loader
+api-version: 1.18
+load: STARTUP
+author: streepje8
+website: https://github.com/streepje8/EEMODLOADER
+main: com.streep.EEMODLOADER.core.Main
+commands:
+ version:
+  description: Check The Loader Version.
+  permission: EEMODLOADER.version
+  permission-message: You do not have permission to use this command.
+  usage: "/<command>"
+permissions:
+  EE.Basic:
+   description: The Basic EE Loader Permissions
+   default: true
+   children:
+    EEMODLOADER.version: true
