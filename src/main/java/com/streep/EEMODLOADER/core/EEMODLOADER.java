@@ -2,6 +2,7 @@ package com.streep.EEMODLOADER.core;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginLoadOrder;
@@ -14,6 +15,8 @@ import org.bukkit.plugin.java.annotation.plugin.author.Author;
 
 import com.streep.EEMODLOADER.commands.VersionHandler;
 import com.streep.EEMODLOADER.commands.core.Command;
+import com.streep.EEMODLOADER.entitysystem.EntityManager;
+import com.streep.EEMODLOADER.listeners.EntityListener;
 
 @Plugin(name="EEMODLOADER", version="1.0")
 @Description(desc = "The modloader for EE Server Side Mods")
@@ -37,11 +40,22 @@ public class EEMODLOADER extends JavaPlugin {
 			getDataFolder().mkdirs();
 		}
 		settings.load();
+		settings.save();
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+		    @Override
+		    public void run() {
+		        EntityManager.UpdateEntities();
+		    }
+		}, 0L, 10L);
+		
+		//Register Listeners
+		getServer().getPluginManager().registerEvents(new EntityListener(), plugin);
 	}
 	
 	@Override
 	public void onDisable() {
 		getLogger().info("Shutting down EE MOD LOADER");
+		settings.save();
 	}
 	
 	public boolean onCommand(CommandSender  sender, org.bukkit.command.Command command, String label, String[] args) {
@@ -49,8 +63,7 @@ public class EEMODLOADER extends JavaPlugin {
 	    	cmd.execute(sender, command, label, args);
 	    }
 	    if(command.getName().equalsIgnoreCase("test")) {
-	    	settings.save();
-	    	((Player)sender).getInventory().addItem(settings.testItem.toItemStack());
+	    	
 	    }
 		return true;
 	}

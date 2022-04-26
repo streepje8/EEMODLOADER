@@ -16,7 +16,17 @@ public class STREEPNETAPI {
 	
 	public static void sendTitle(Player player, String message) {
         message = ChatUtil.format(message, player);
-        player.sendTitle(message, "", 1,1,1); //WIP
-        //TODO ^^FIX THIS
+        player.sendTitle(message, null, 10,70,20);
+    }
+	
+	public static void sendTitle(Player player, String message, int fadein, int stay, int fadeout) {
+        message = ChatUtil.format(message, player);
+        player.sendTitle(message, null, fadein,stay,fadeout);
+    }
+	
+	public static void sendTitle(Player player, String message, String subtitle, int fadein, int stay, int fadeout) {
+        message = ChatUtil.format(message, player);
+        subtitle = ChatUtil.format(subtitle, player);
+        player.sendTitle(message, subtitle, fadein,stay,fadeout);
     }
 }
