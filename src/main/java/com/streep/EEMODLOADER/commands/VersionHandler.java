@@ -16,6 +16,6 @@ public class VersionHandler implements CommandHandler {
 	
 	@Override
 	public void runAlways(CommandSender sender, Command command, String label, String[] arguments) {
-		sender.sendMessage(ChatUtil.format("&bVersion 0.0.1inDev"));
+		sender.sendMessage(ChatUtil.format("&bVersion 0.0.2inDev"));
 	}
 }

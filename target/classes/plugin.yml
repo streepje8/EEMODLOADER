@@ -1,5 +1,5 @@
 name: EEMODLOADER
-version: 1.0.0
+version: 0.0.2
 description: The EE Server Side Mod Loader
 api-version: 1.18
 load: STARTUP
@@ -24,6 +24,11 @@ commands:
   permission: EEMODLOADER.loaditem
   permission-message: You do not have permission to use this command.
   usage: "/<command> <itemname>"
+ setrarity:
+  description: Set the rarity of an item
+  permission: EEMODLOADER.setrarity
+  permission-message: You do not have permission to use this command.
+  usage: "/<command> <rarity>"
  test:
   description: Test Command
   permission: EEMODLOADER.test

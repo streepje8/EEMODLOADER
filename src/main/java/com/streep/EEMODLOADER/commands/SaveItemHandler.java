@@ -29,7 +29,11 @@ public class SaveItemHandler implements CommandHandler {
 			name = name.replaceAll("/", "__FORWARDSLASH__");
 			name = name.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
 			name = name.replaceAll("__FORWARDSLASH__", "/");
-			File folder = new File(EEMODLOADER.plugin.getDataFolder() + "/Items/" + name.substring(0,name.lastIndexOf('/')));
+			String addon = "";
+			if(name.lastIndexOf('/') > 0) {
+				addon = "/" + name.substring(0,name.lastIndexOf('/'));
+			}
+			File folder = new File(EEMODLOADER.plugin.getDataFolder() + "/Items" + addon);
 			if(!folder.exists()) {
 				folder.mkdirs();
 			}

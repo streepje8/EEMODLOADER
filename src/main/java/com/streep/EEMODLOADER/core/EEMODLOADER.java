@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.annotation.plugin.author.Author;
 
 import com.streep.EEMODLOADER.commands.LoadItemHandler;
 import com.streep.EEMODLOADER.commands.SaveItemHandler;
+import com.streep.EEMODLOADER.commands.SetRarityHandler;
 import com.streep.EEMODLOADER.commands.VersionHandler;
 import com.streep.EEMODLOADER.commands.core.Command;
 import com.streep.EEMODLOADER.entitysystem.EntityManager;
@@ -30,7 +31,8 @@ public class EEMODLOADER extends JavaPlugin {
 	private final List<Command> commands = Arrays.asList(new Command[]{
 			new Command("version", new VersionHandler()),
 			new Command("saveitem", new SaveItemHandler()),
-			new Command("loaditem", new LoadItemHandler())
+			new Command("loaditem", new LoadItemHandler()),
+			new Command("setrarity", new SetRarityHandler())
 	});
 	
 	public static EEMODLOADER plugin;
