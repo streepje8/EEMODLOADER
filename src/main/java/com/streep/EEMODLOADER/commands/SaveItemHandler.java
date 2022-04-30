@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.json.JSONObject;
 
 import com.streep.EEMODLOADER.commands.core.CommandHandler;
 import com.streep.EEMODLOADER.core.EEMODLOADER;
@@ -27,8 +26,10 @@ public class SaveItemHandler implements CommandHandler {
 		if(arguments.length == 1) {
 			sender.sendMessage(ChatUtil.format("&fSaving Item...."));
 			String name = arguments[0];
+			name = name.replaceAll("/", "__FORWARDSLASH__");
 			name = name.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
-			File folder = new File(EEMODLOADER.plugin.getDataFolder() + "/Items");
+			name = name.replaceAll("__FORWARDSLASH__", "/");
+			File folder = new File(EEMODLOADER.plugin.getDataFolder() + "/Items/" + name.substring(0,name.lastIndexOf('/')));
 			if(!folder.exists()) {
 				folder.mkdirs();
 			}

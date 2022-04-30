@@ -1,19 +1,25 @@
 package com.streep.EEMODLOADER.itemsystem;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.json.JSONObject;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import com.streep.EEMODLOADER.core.EEMODLOADER;
 import com.streep.EEMODLOADER.utils.ChatUtil;
@@ -25,6 +31,7 @@ public class EEItemStack {
 	
 	public String type = "stone";
 	public String itemType = Material.STONE.name();
+	public String name = "";
 	public int amount = 1;
 	public MaterialData data;
 	public ItemMeta meta;
@@ -46,6 +53,11 @@ public class EEItemStack {
 		if(EEMODLOADER.plugin.settings.useRarities) {
 			this.rarity = EEMODLOADER.plugin.settings.rarities.get(0);
 			this.displayRarity = true;
+		}
+		if(this.meta.getDisplayName() != null) {
+			this.name = this.meta.getDisplayName();
+		} else {
+			this.name = templateType.name();
 		}
 		this.customData = dataFromJSONObject(jsonObject);
 	}
@@ -213,17 +225,29 @@ public class EEItemStack {
 		obj.put("type", type);
 		obj.put("itemType", itemType);
 		obj.put("amount", amount);
+		if(name.length() < 1) {
+			if(this.meta.getDisplayName() != null) {
+				name = this.meta.getDisplayName();
+			}
+		}
+		obj.put("itemName", name);
 		obj.put("itemData", SerializeMaterialData(data));
-		obj.put("itemMeta", SerializeItemMeta(meta));
+		obj.put("itemMeta", SerializeItemMeta(meta, this.toItemStack()));
 		obj.put("EECustomData", dataToJSONObject(customData));
 		return obj;
 	}
 
 	public static EEItemStack FromJsonObject(JSONObject object) {
-		//return new EEItemStack(object.getString("name"), object.getString("type"), Material.valueOf(object.getString("itemType")), object.getInt("amount"), castList(object.getJSONArray("lore").toList()), object.getInt("damage"), DeSerializeMaterialData(object.getString("itemType"), object.getString("itemData")));
-		return new EEItemStack(DeSerializeItemMeta(object.getJSONObject("itemMeta")), object.getString("type"), Material.valueOf(object.getString("itemType")), object.getInt("amount"), DeSerializeMaterialData(object.getString("itemType"), object.getString("itemData")), object.getJSONObject("EECustomData"));
+		EEItemStack stack = new EEItemStack(DeSerializeItemMeta(object.getJSONObject("itemMeta")), object.getString("type"), Material.valueOf(object.getString("itemType")), object.getInt("amount"), DeSerializeMaterialData(object.getString("itemType"), object.getString("itemData")), object.getJSONObject("EECustomData"));
+		stack.name = object.getString("itemName");
+		stack.updateName();
+		return stack;
 	}
 	
+	private void updateName() {
+		this.meta.setDisplayName(this.name);
+	}
+
 	private static String SerializeMaterialData(MaterialData data) {
 		return data.getData() + "";
 	}
@@ -232,28 +256,104 @@ public class EEItemStack {
 		return new MaterialData(Material.valueOf(itemType), Byte.parseByte(s));
 	}
 	
-	private static List<String> saveabletypes = Arrays.asList(new String[] {"java.lang.String"});
-	
-	public static JSONObject SerializeItemMeta(ItemMeta meta) {
+	public static JSONObject SerializeItemMeta(ItemMeta meta, ItemStack stack) {
 		JSONObject obj = new JSONObject();
 		Map<String, Object> map = meta.serialize();
+		boolean jsonCompatible = true;
 		for(String key : map.keySet()) {
 			obj.put(key, map.get(key));
-			if(!saveabletypes.contains(obj.get(key).getClass().getName())) {
-				obj.getJSONObject(key).put("__CLASSTYPE__", map.get(key).getClass().getName());
+			obj = new JSONObject(obj.toString(0));
+			if(map.get(key).getClass().getName().equalsIgnoreCase("java.util.LinkedHashMap") || map.get(key).getClass().getName().equalsIgnoreCase("org.bukkit.Color")) {
+				jsonCompatible = false;
+				break;
 			}
-			EEMODLOADER.plugin.getLogger().info("KEY: " + key + " /// VALUE: " + obj.get(key).getClass().getName());
+			if(obj.get(key) instanceof JSONObject) {
+					obj.getJSONObject(key).put("__CLASSTYPE__", map.get(key).getClass().getName());
+			}
+		}
+		if(!jsonCompatible) {
+			obj = new JSONObject();
+			obj.put("__JSONCOMPATIBLE__", jsonCompatible);
+			obj.put("__DATA__", itemStackToBase64(stack));
+		} else {
+			obj.put("__JSONCOMPATIBLE__", jsonCompatible);
 		}
 		return obj;
 	}
-
+	
 	public static ItemMeta DeSerializeItemMeta(JSONObject obj) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		for(String key : JSONObject.getNames(obj)) {
-			map.put(key, obj.get(key));
-			EEMODLOADER.plugin.getLogger().info("KEY: " + key + " /// VALUE: " + obj.get(key).getClass().getName());
+		if(obj.getBoolean("__JSONCOMPATIBLE__")) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			for(String key : JSONObject.getNames(obj)) {
+				Object found = obj.get(key);
+				if(found instanceof JSONObject) {
+					JSONObject foundobj = (JSONObject) found;
+					String classname = foundobj.getString("__CLASSTYPE__");
+					switch(classname) {
+						case "com.google.common.collect.RegularImmutableMap":
+							Map<String, Integer> mapboi = new HashMap<String, Integer>();
+							for(String keyy : JSONObject.getNames(foundobj)) {
+								if(!keyy.equalsIgnoreCase("__CLASSTYPE__")) {
+									mapboi.put(keyy, foundobj.getInt(keyy));
+								}
+							}
+							map.put(key, mapboi);
+							break;
+						case "java.util.LinkedHashMap":
+							LinkedHashMap<String, ArrayList<AttributeModifier>> linkedboi = new LinkedHashMap<String, ArrayList<AttributeModifier>>();
+							for(String keyy : JSONObject.getNames(foundobj)) {
+								if(!keyy.equalsIgnoreCase("__CLASSTYPE__")) {
+									JSONObject foundobjj = foundobj.getJSONArray(keyy).getJSONObject(0);
+									ArrayList<AttributeModifier> modlist = new ArrayList<AttributeModifier>();
+									AttributeModifier attbm = new AttributeModifier(foundobjj.getString("name"), foundobjj.getDouble("amount"), AttributeModifier.Operation.valueOf(foundobjj.getString("operation")));
+									modlist.add(attbm);
+									linkedboi.put(keyy, modlist);
+								}
+							}
+							break;
+						default:
+							map.put(key, found);
+							break;
+					}
+				} else {
+					map.put(key, found);
+				}
+				EEMODLOADER.plugin.getLogger().info("KEY: " + key + " /// VALUE: " + obj.get(key).getClass().getName());
+			}
+			map.put("==", "ItemMeta");
+			return (ItemMeta) ConfigurationSerialization.deserializeObject(map);
+		} else {
+			return itemStackFromBase64(obj.getString("__DATA__")).getItemMeta();
 		}
-		map.put("==", "ItemMeta");
-        return (ItemMeta) ConfigurationSerialization.deserializeObject((Map<String, Object>) map);
+        
+    }
+	
+	public static String itemStackToBase64(ItemStack item) {
+    	try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+            dataOutput.writeObject(item);
+            
+            // Serialize that array
+            dataOutput.close();
+            return Base64Coder.encodeLines(outputStream.toByteArray());
+        } catch (Exception e) {
+        	 EEMODLOADER.plugin.getLogger().info("COULD NOT SAVE ITEM. REASON: " + e.getMessage());
+        	 return null;
+        }
+    }
+	
+	public static ItemStack itemStackFromBase64(String data) {
+    	try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+            ItemStack item = (ItemStack) dataInput.readObject();
+            
+            dataInput.close();
+            return item;
+        } catch (Exception e) {
+            EEMODLOADER.plugin.getLogger().info("COULD NOT LOAD ITEM. REASON: " + e.getMessage());
+            return null;
+        }
     }
 }

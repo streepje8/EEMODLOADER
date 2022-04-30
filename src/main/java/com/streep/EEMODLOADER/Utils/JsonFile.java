@@ -29,6 +29,9 @@ public class JsonFile {
 			while((line = reader.readLine()) != null) {
 				fileContents += line + "\n";
 			}
+			if(fileContents.length() < 1) {
+				fileContents = "{}";
+			}
 			object = new JSONObject(fileContents);
 		} catch(Exception e) {
 			e.printStackTrace();
