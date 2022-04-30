@@ -18,7 +18,7 @@ public class JsonFile {
 	public JSONObject object = new JSONObject();
 	
 	public JsonFile(String name) {
-		myFile = new File(EEMODLOADER.plugin.getDataFolder() + "/" + name + ".json");
+		myFile = new File(EEMODLOADER.plugin.getDataFolder() + "/" + name + (name.endsWith(".json") ? "" : ".json"));
 		if(!myFile.exists())
 			try {myFile.createNewFile();} catch(IOException e) {e.printStackTrace();}
 		BufferedReader reader = null;

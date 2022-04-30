@@ -5,8 +5,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public interface CommandHandler {
-	
-    public default boolean execute(CommandSender sender, Command command, String label, String[] arguments) {
+
+	public default boolean execute(CommandSender sender, Command command, String label, String[] arguments) {
     	runAlways(sender, command, label, arguments);
     	if (sender instanceof Player) {
             if (arguments.length == 0) {
@@ -24,6 +24,10 @@ public interface CommandHandler {
             }
         }
     }
+	
+	public default String getPermission() {
+		return null;
+	}
     
     public default void runAlways(CommandSender sender, Command command, String label, String[] arguments) {}
    

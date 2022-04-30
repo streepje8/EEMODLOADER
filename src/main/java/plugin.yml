@@ -14,6 +14,16 @@ commands:
   permission: EEMODLOADER.version
   permission-message: You do not have permission to use this command.
   usage: "/<command>"
+ saveitem:
+  description: Save an item to file
+  permission: EEMODLOADER.saveitem
+  permission-message: You do not have permission to use this command.
+  usage: "/<command> <itemname>"
+ loaditem:
+  description: Load an item from a file
+  permission: EEMODLOADER.loaditem
+  permission-message: You do not have permission to use this command.
+  usage: "/<command> <itemname>"
  test:
   description: Test Command
   permission: EEMODLOADER.test
@@ -25,3 +35,9 @@ permissions:
    default: true
    children:
     EEMODLOADER.version: true
+  EE.Advanced:
+   description: The Advanced EE Loader Permissions
+   default: false
+   children:
+    EEMODLOADER.saveitem: true
+    EEMODLOADER.loaditem: true

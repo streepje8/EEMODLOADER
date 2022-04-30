@@ -19,8 +19,6 @@ public class EEEntity {
 	public boolean isValid = false;
 	public boolean isNameVisible = false;
 	public boolean drawHealthBar = false;
-	public String barFormat = "&8[&f%name%&8][&c♥&f%hpnum%&8/&f%maxhp%&8][%hpbar%&8]";
-	public int barSegments = 10;
 	public double maxHP = 20d;
 	public UUID id;
 	public int aliveTicks = 0;
@@ -79,18 +77,18 @@ public class EEEntity {
 			if(drawHealthBar && living) {
 				String bar = "&a";
 				double percentage = ((LivingEntity)entity).getHealth() / this.maxHP;
-				int filledBars = (int) SMath.clamp(Math.round(barSegments * percentage),0,barSegments);
+				int filledBars = (int) SMath.clamp(Math.round(EEMODLOADER.plugin.settings.barSegments * percentage),0,EEMODLOADER.plugin.settings.barSegments);
 				for(int i = 0; i < filledBars; i++) {
 					bar += "|";
 				}
 				bar += "&c";
-				for(int i = filledBars + 1; i < barSegments; i++) {
+				for(int i = filledBars + 1; i < EEMODLOADER.plugin.settings.barSegments; i++) {
 					bar += "|";
 				}
-				entity.setCustomName(ChatUtil.format(barFormat
+				entity.setCustomName(ChatUtil.format(EEMODLOADER.plugin.settings.barFormat
 						.replaceAll("%name%", this.name)
-						.replaceAll("%hpnum%", ((LivingEntity)entity).getHealth() + "")
-						.replaceAll("%maxhp%", this.maxHP + "")
+						.replaceAll("%hpnum%", (Math.round(((LivingEntity)entity).getHealth() * 10f) / 10f) + "")
+						.replaceAll("%maxhp%",  (Math.round(this.maxHP * 10f) / 10f) + "")
 						.replaceAll("%hpbar%", bar)
 						));
 				entity.setCustomNameVisible(true);
@@ -103,6 +101,7 @@ public class EEEntity {
 				}
 			}
 		} else {
+			entity.setCustomName(name);
 			this.isValid = false;
 		}
 	}
