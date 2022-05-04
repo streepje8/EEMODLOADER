@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import com.streep.EEMODLOADER.core.EEMODLOADER;
+import com.streep.EEMODLOADER.eventsystem.EEItemEvents;
 import com.streep.EEMODLOADER.utils.ChatUtil;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,6 +39,7 @@ public class EEItemStack {
 	public boolean displayRarity = false;
 	public String rarity = "";
 	private HashMap<String, String> customData = new HashMap<String, String>();
+	public EEItemEvents events = new EEItemEvents();
 	
 	public EEItemStack(String name, String type, Material templateType, int amount) {
 		this(new ItemStack(templateType).getItemMeta(), type, templateType, amount);
@@ -60,6 +62,7 @@ public class EEItemStack {
 			this.name = templateType.name();
 		}
 		this.customData = dataFromJSONObject(jsonObject);
+		this.events = new EEItemEvents();
 	}
 	
 	public EEItemStack(ItemMeta meta, String type, Material templateType, int amount, MaterialData data) {
@@ -115,6 +118,7 @@ public class EEItemStack {
 		String eetype = tag.l("EEType"); //tag.getString
 		String eerarity = tag.l("EERarity");
 		String eecustomdata = tag.l("EECustomData");
+		String eeeventsdata = tag.l("EEEventsData");
 		if(eetype != null) {
 			item.type = eetype;
 		} else {
@@ -126,6 +130,11 @@ public class EEItemStack {
 		}
 		if(eecustomdata != null) {
 			item.customData = dataFromString(eecustomdata);
+		}
+		if(eeeventsdata != null) {
+			item.events = new EEItemEvents(eeeventsdata);
+		} else {
+			item.events = new EEItemEvents();
 		}
 		item.itemType = i.getType().name();
 		item.data = i.getData();
@@ -174,6 +183,7 @@ public class EEItemStack {
 		NBTTagCompound tag = stack.u(); //stack.getOrCreateTag
 		tag.a("EEType", type); //tag.setString
 		tag.a("EERarity", rarity);
+		tag.a("EEEventsData", events.toJSONObject().toString(1));
 		tag.a("EECustomData", dataToString(customData));
 		stack.c(tag); //stack.setTag
 		result = CraftItemStack.asBukkitCopy(stack);
@@ -234,6 +244,7 @@ public class EEItemStack {
 		obj.put("itemData", SerializeMaterialData(data));
 		obj.put("itemMeta", SerializeItemMeta(meta, this.toItemStack()));
 		obj.put("EECustomData", dataToJSONObject(customData));
+		obj.put("EEEventsData", events.toJSONObject());
 		return obj;
 	}
 
@@ -241,6 +252,14 @@ public class EEItemStack {
 		EEItemStack stack = new EEItemStack(DeSerializeItemMeta(object.getJSONObject("itemMeta")), object.getString("type"), Material.valueOf(object.getString("itemType")), object.getInt("amount"), DeSerializeMaterialData(object.getString("itemType"), object.getString("itemData")), object.getJSONObject("EECustomData"));
 		stack.name = object.getString("itemName");
 		stack.updateName();
+		net.minecraft.world.item.ItemStack NMSstack = CraftItemStack.asNMSCopy(stack.toItemStack());
+		NBTTagCompound tag = NMSstack.u(); //stack.getOrCreateTag
+		String eerarity = tag.l("EERarity");
+		if(eerarity != null) {
+			if(EEMODLOADER.plugin.settings.rarities.contains(eerarity))
+				stack.rarity = eerarity;
+		}
+		stack.events = new EEItemEvents(object.getJSONObject("EEEventsData").toString());
 		return stack;
 	}
 	

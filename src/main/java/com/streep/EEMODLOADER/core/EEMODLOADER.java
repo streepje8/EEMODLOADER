@@ -18,6 +18,7 @@ import com.streep.EEMODLOADER.commands.SetRarityHandler;
 import com.streep.EEMODLOADER.commands.VersionHandler;
 import com.streep.EEMODLOADER.commands.core.Command;
 import com.streep.EEMODLOADER.entitysystem.EntityManager;
+import com.streep.EEMODLOADER.listeners.EEItemEventsListener;
 import com.streep.EEMODLOADER.listeners.EntityListener;
 import com.streep.EEMODLOADER.listeners.ItemListener;
 
@@ -57,6 +58,7 @@ public class EEMODLOADER extends JavaPlugin {
 		//Register Listeners
 		getServer().getPluginManager().registerEvents(new EntityListener(), plugin);
 		getServer().getPluginManager().registerEvents(new ItemListener(), plugin);
+		getServer().getPluginManager().registerEvents(new EEItemEventsListener(), plugin);
 	}
 	
 	@Override
