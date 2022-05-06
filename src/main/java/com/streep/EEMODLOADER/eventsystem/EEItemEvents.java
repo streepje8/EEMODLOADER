@@ -42,6 +42,16 @@ public class EEItemEvents {
 		return obj;
 	}
 	
+	public boolean addLisntener(String eventname, EEEventListener e) {
+		if(lookupTable.containsKey(eventname.toLowerCase())) {
+			lookupTable.get(eventname.toLowerCase()).addListener(e);
+			return true;
+		}
+		RegisterEEEvent(eventname, new EEEvent());
+		addLisntener(eventname, e);
+		return false;
+	}
+	
 	public void fire(String name, Event e) {
 		if(lookupTable.containsKey(name.toLowerCase()))
 			lookupTable.get(name.toLowerCase()).Raise(e);

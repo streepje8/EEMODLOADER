@@ -29,6 +29,11 @@ commands:
   permission: EEMODLOADER.setrarity
   permission-message: You do not have permission to use this command.
   usage: "/<command> <rarity>"
+ addlistener:
+  description: Add an event listener to an item
+  permission: EEMODLOADER.addlistener
+  permission-message: You do not have permission to use this command.
+  usage: "/<command> <type> <event> <eventarg>"
  test:
   description: Test Command
   permission: EEMODLOADER.test

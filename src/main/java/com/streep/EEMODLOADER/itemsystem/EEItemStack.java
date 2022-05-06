@@ -337,7 +337,6 @@ public class EEItemStack {
 				} else {
 					map.put(key, found);
 				}
-				EEMODLOADER.plugin.getLogger().info("KEY: " + key + " /// VALUE: " + obj.get(key).getClass().getName());
 			}
 			map.put("==", "ItemMeta");
 			return (ItemMeta) ConfigurationSerialization.deserializeObject(map);

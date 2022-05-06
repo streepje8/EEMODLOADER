@@ -14,6 +14,10 @@
 	      <id>bukkit-repo</id>
 	      <url>http://repo.bukkit.org/content/groups/public/</url>
 	    </repository>
+	    <repository>
+	        <id>local-maven-repo</id>
+	        <url>file:///${project.basedir}/lib</url>
+	    </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -33,12 +37,22 @@
 		  <version>1.1.0-SNAPSHOT</version>
 		  <scope>provided</scope>
 		</dependency>
+		<!--  
 		<dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>LATEST</version>
+            <version>spigot-1.18.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+             spigot-1.18.2-R0.1-SNAPSHOT.jar would use a variable but maven hates me 
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
             <scope>system</scope>
-            <systemPath>C:\Users\streep\Documents\JavaProjects\plugins\EEMODLOADER\lib\spigot-1.18.2-R0.1-SNAPSHOT.jar</systemPath> <!-- would use a variable but maven hates me -->
+            <version>LATEST</version>
+			<systemPath>C:\Users\streepmsi\Desktop\Git Projects\EEMODLOADER\lib\org\bukkit\craftbukkit\spigot-1.18.2-R0.1-SNAPSHOT\spigot-1.18.2-R0.1-SNAPSHOT.jar</systemPath>
+            <!-- spigot-1.18.2-R0.1-SNAPSHOT.jar would use a variable but maven hates me -->
         </dependency>
     </dependencies>
 </project>

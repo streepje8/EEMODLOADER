@@ -15,9 +15,11 @@ import com.streep.EEMODLOADER.core.EEMODLOADER;
 public class JsonFile {
 
 	private File myFile;
+	private String name = "";
 	public JSONObject object = new JSONObject();
 	
 	public JsonFile(String name) {
+		this.name = name;
 		myFile = new File(EEMODLOADER.plugin.getDataFolder() + "/" + name + (name.endsWith(".json") ? "" : ".json"));
 		if(!myFile.exists())
 			try {myFile.createNewFile();} catch(IOException e) {e.printStackTrace();}
@@ -39,6 +41,10 @@ public class JsonFile {
 			if(reader != null)
 				try {reader.close();} catch (IOException e) {e.printStackTrace();}
 		}
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public void save() {

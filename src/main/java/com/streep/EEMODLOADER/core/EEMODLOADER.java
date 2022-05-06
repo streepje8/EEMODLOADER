@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.annotation.plugin.Plugin;
 import org.bukkit.plugin.java.annotation.plugin.Website;
 import org.bukkit.plugin.java.annotation.plugin.author.Author;
 
+import com.streep.EEMODLOADER.commands.AddListenerHandler;
 import com.streep.EEMODLOADER.commands.LoadItemHandler;
 import com.streep.EEMODLOADER.commands.SaveItemHandler;
 import com.streep.EEMODLOADER.commands.SetRarityHandler;
@@ -21,6 +22,7 @@ import com.streep.EEMODLOADER.entitysystem.EntityManager;
 import com.streep.EEMODLOADER.listeners.EEItemEventsListener;
 import com.streep.EEMODLOADER.listeners.EntityListener;
 import com.streep.EEMODLOADER.listeners.ItemListener;
+import com.streep.EEMODLOADER.utils.JsonFunctionLoader;
 
 @Plugin(name="EEMODLOADER", version="1.0")
 @Description(desc = "The modloader for EE Server Side Mods")
@@ -33,7 +35,8 @@ public class EEMODLOADER extends JavaPlugin {
 			new Command("version", new VersionHandler()),
 			new Command("saveitem", new SaveItemHandler()),
 			new Command("loaditem", new LoadItemHandler()),
-			new Command("setrarity", new SetRarityHandler())
+			new Command("setrarity", new SetRarityHandler()),
+			new Command("addlistener", new AddListenerHandler())
 	});
 	
 	public static EEMODLOADER plugin;
@@ -59,11 +62,14 @@ public class EEMODLOADER extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new EntityListener(), plugin);
 		getServer().getPluginManager().registerEvents(new ItemListener(), plugin);
 		getServer().getPluginManager().registerEvents(new EEItemEventsListener(), plugin);
+		JsonFunctionLoader.LoadAllFunctions();
+		EntityManager.initAllEntities();
 	}
 	
 	@Override
 	public void onDisable() {
 		getLogger().info("Shutting down EE MOD LOADER");
+		EntityManager.DisableEntities();
 		settings.save();
 	}
 	

@@ -11,9 +11,7 @@ public class EEEvent {
 
 	private List<EEEventListener> listeners = new ArrayList<EEEventListener>();
 	
-	public EEEvent() {
-		listeners.add(new EEDebugEventListener());
-	};
+	public EEEvent() {};
 	
 	public EEEvent(JSONArray json) {
 		for(int i = 0; i < json.length(); i++) {
