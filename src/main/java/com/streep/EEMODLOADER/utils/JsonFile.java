@@ -43,6 +43,31 @@ public class JsonFile {
 		}
 	}
 	
+	public JsonFile(String name, boolean isAbsolute) {
+		this.name = name;
+		myFile = new File(name + (name.endsWith(".json") ? "" : ".json"));
+		if(!myFile.exists())
+			try {myFile.createNewFile();} catch(IOException e) {e.printStackTrace();}
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(myFile));
+			String fileContents = "";
+			String line = "";
+			while((line = reader.readLine()) != null) {
+				fileContents += line + "\n";
+			}
+			if(fileContents.length() < 1) {
+				fileContents = "{}";
+			}
+			object = new JSONObject(fileContents);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(reader != null)
+				try {reader.close();} catch (IOException e) {e.printStackTrace();}
+		}
+	}
+	
 	public String getName() {
 		return name;
 	}

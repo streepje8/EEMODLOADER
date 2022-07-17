@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>EEMODLOADER</name>
 	<properties>
-		<libfolder>${project.basedir}/lib</libfolder>
+		<libfolder>${project.basedir}\\lib</libfolder>
 	</properties>
 	<description>A plugin for loading server side ee mods</description>
 	<repositories>
@@ -20,8 +20,8 @@
 			<url>http://repo.bukkit.org/content/groups/public/</url>
 		</repository>
 		<repository>
-			<id>local-maven-repo</id>
-			<url>file:///${project.basedir}/lib</url>
+			<id>lib-local-repo</id>
+			<url>file:///${project.basedir}\lib</url>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -47,7 +47,7 @@
 			<artifactId>craftbukkit</artifactId>
 			<version>LATEST</version>
 			<scope>system</scope>
-			<systemPath>${libfolder}/craftbukkit.jar</systemPath>
+			<systemPath>C:\Users\streep\Documents\JavaProjects\plugins\EEMODLOADER\lib\craftbukkit-LATEST.jar</systemPath>
 		</dependency>
 	</dependencies>
 </project>

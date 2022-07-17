@@ -6,8 +6,6 @@ import java.util.Map;
 import org.bukkit.event.Event;
 import org.json.JSONObject;
 
-import com.streep.EEMODLOADER.core.EEMODLOADER;
-
 public class EEItemEvents {
 
 	private Map<String, EEEvent> lookupTable = new HashMap<String, EEEvent>();

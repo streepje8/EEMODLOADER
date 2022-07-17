@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.annotation.plugin.author.Author;
 
 import com.streep.EEMODLOADER.commands.AddListenerHandler;
 import com.streep.EEMODLOADER.commands.LoadItemHandler;
+import com.streep.EEMODLOADER.commands.ModsHandler;
 import com.streep.EEMODLOADER.commands.SaveItemHandler;
 import com.streep.EEMODLOADER.commands.SetRarityHandler;
 import com.streep.EEMODLOADER.commands.VersionHandler;
@@ -22,6 +23,7 @@ import com.streep.EEMODLOADER.entitysystem.EntityManager;
 import com.streep.EEMODLOADER.listeners.EEItemEventsListener;
 import com.streep.EEMODLOADER.listeners.EntityListener;
 import com.streep.EEMODLOADER.listeners.ItemListener;
+import com.streep.EEMODLOADER.modloader.MODLOADER;
 import com.streep.EEMODLOADER.utils.JsonFunctionLoader;
 
 @Plugin(name="EEMODLOADER", version="1.0")
@@ -36,7 +38,8 @@ public class EEMODLOADER extends JavaPlugin {
 			new Command("saveitem", new SaveItemHandler()),
 			new Command("loaditem", new LoadItemHandler()),
 			new Command("setrarity", new SetRarityHandler()),
-			new Command("addlistener", new AddListenerHandler())
+			new Command("addlistener", new AddListenerHandler()),
+			new Command("mods", new ModsHandler())
 	});
 	
 	public static EEMODLOADER plugin;
@@ -64,6 +67,7 @@ public class EEMODLOADER extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new EEItemEventsListener(), plugin);
 		JsonFunctionLoader.LoadAllFunctions();
 		EntityManager.initAllEntities();
+		MODLOADER.ReLoadMods();
 	}
 	
 	@Override

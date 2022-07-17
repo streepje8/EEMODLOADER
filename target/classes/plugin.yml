@@ -14,6 +14,11 @@ commands:
   permission: EEMODLOADER.version
   permission-message: You do not have permission to use this command.
   usage: "/<command>"
+ mods:
+  description: Check The Loaded Mods.
+  permission: EEMODLOADER.mods
+  permission-message: You do not have permission to use this command.
+  usage: "/<command>"
  saveitem:
   description: Save an item to file
   permission: EEMODLOADER.saveitem

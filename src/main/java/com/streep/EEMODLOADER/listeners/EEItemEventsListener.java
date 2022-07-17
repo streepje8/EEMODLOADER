@@ -10,7 +10,7 @@ import com.streep.EEMODLOADER.itemsystem.EEItemStack;
 public class EEItemEventsListener implements Listener {
 
 	@EventHandler
-	public void onRightClickEvent(PlayerInteractEvent e) {
+	public void onClickEvent(PlayerInteractEvent e) {
 		ItemStack stack = e.getItem();
 		if(stack != null) {
 			EEItemStack estack = EEItemStack.FromItemStack(stack);
