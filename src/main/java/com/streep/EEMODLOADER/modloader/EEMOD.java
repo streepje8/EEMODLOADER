@@ -24,7 +24,18 @@ public class EEMOD {
 				}
 			}
 		}
-		
+		File entitiesDir = new File(modDirectory.getAbsolutePath() + "/Entities");
+		if(entitiesDir.exists()) {
+			for(File entityFile : entitiesDir.listFiles()) {
+				if(entityFile.getAbsolutePath().endsWith(".json")) {
+					MODEntity entity = new MODEntity();
+					entity.filepath = entityFile.getAbsolutePath();
+					entity.modName = name;
+					MODLOADER.RegisterEntity(name + "/" + entityFile.getName().replace(".json", ""), entity);
+					EEMODLOADER.plugin.getLogger().info("Loaded entity: " + entity.filepath);
+				}
+			}
+		}
 	}
 	
 }

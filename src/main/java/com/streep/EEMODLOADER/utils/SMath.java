@@ -18,4 +18,12 @@ public class SMath {
 		return value;
 	}
 	
+	public static boolean isNum(String s){
+		try{
+			Double.parseDouble(s);
+			return true;
+		} catch(NumberFormatException e){
+			return false;
+		}
+	}
 }

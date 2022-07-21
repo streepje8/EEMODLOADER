@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -15,6 +16,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -232,29 +234,39 @@ public class EEItemStack {
 
 	public JSONObject toJsonObject() {
 		JSONObject obj = new JSONObject();
-		obj.put("type", type);
-		obj.put("itemType", itemType);
-		obj.put("amount", amount);
+		obj.put("Type", type);
+		obj.put("ItemType", itemType);
+		obj.put("Amount", amount);
+		obj.put("Rarity", rarity);
+		if(toItemStack().getType() == Material.PLAYER_HEAD) {
+			SkullMeta skullm = (SkullMeta)meta;
+			obj.put("SkullOwner", skullm.getOwningPlayer().getUniqueId().toString());
+		}
 		if(name.length() < 1) {
 			if(this.meta.getDisplayName() != null) {
 				name = this.meta.getDisplayName();
 			}
 		}
-		obj.put("itemName", name);
-		obj.put("itemData", SerializeMaterialData(data));
-		obj.put("itemMeta", SerializeItemMeta(meta, this.toItemStack()));
+		obj.put("ItemName", name);
+		obj.put("ItemData", SerializeMaterialData(data));
+		obj.put("ItemMeta", SerializeItemMeta(meta, this.toItemStack()));
 		obj.put("EECustomData", dataToJSONObject(customData));
 		obj.put("EEEventsData", events.toJSONObject());
 		return obj;
 	}
 
 	public static EEItemStack FromJsonObject(JSONObject object) {
-		EEItemStack stack = new EEItemStack(DeSerializeItemMeta(object.getJSONObject("itemMeta")), object.getString("type"), Material.valueOf(object.getString("itemType")), object.getInt("amount"), DeSerializeMaterialData(object.getString("itemType"), object.getString("itemData")), object.getJSONObject("EECustomData"));
-		stack.name = object.getString("itemName");
+		EEItemStack stack = new EEItemStack(DeSerializeItemMeta(object.getJSONObject("ItemMeta")), object.getString("Type"), Material.valueOf(object.getString("ItemType")), object.getInt("Amount"), DeSerializeMaterialData(object.getString("ItemType"), object.getString("ItemData")), object.getJSONObject("EECustomData"));
+		stack.name = object.getString("ItemName");
 		stack.updateName();
-		net.minecraft.world.item.ItemStack NMSstack = CraftItemStack.asNMSCopy(stack.toItemStack());
-		NBTTagCompound tag = NMSstack.u(); //stack.getOrCreateTag
-		String eerarity = tag.l("EERarity");
+		String eerarity = object.getString("Rarity");
+		if(stack.toItemStack().getType() == Material.PLAYER_HEAD) {
+			if(object.has("SkullOwner")) {
+				SkullMeta skullm = (SkullMeta)stack.meta;
+				skullm.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString(object.getString("SkullOwner"))));
+				stack.meta = skullm;
+			}
+		}
 		if(eerarity != null) {
 			if(EEMODLOADER.plugin.settings.rarities.contains(eerarity))
 				stack.rarity = eerarity;
@@ -329,6 +341,16 @@ public class EEItemStack {
 									linkedboi.put(keyy, modlist);
 								}
 							}
+							map.put(key, linkedboi);
+							break;
+						case "com.google.common.collect.SingletonImmutableBiMap":
+							mapboi = new HashMap<String, Integer>();
+							for(String keyy : JSONObject.getNames(foundobj)) {
+								if(!keyy.equalsIgnoreCase("__CLASSTYPE__")) {
+									mapboi.put(keyy, foundobj.getInt(keyy));
+								}
+							}
+							map.put(key, mapboi);
 							break;
 						default:
 							map.put(key, found);

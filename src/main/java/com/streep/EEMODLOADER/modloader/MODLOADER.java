@@ -12,6 +12,7 @@ public class MODLOADER {
 
 	private static ArrayList<EEMOD> mods = new ArrayList<EEMOD>();
 	private static HashMap<String, MODItem> itemDB = new HashMap<String, MODItem>();
+	private static HashMap<String, MODEntity> entityDB = new HashMap<String, MODEntity>();
 	
 	public static void ReLoadMods() {
 		mods = new ArrayList<EEMOD>();
@@ -38,6 +39,10 @@ public class MODLOADER {
 		}
 	}
 	
+	public static ArrayList<EEMOD> getMods() {
+		return mods;
+	}
+	
 	public static void RegisterItem(String path, MODItem item) {
 		if(!itemDB.containsKey(path)) {
 			itemDB.put(path, item);
@@ -52,9 +57,20 @@ public class MODLOADER {
 		}
 		return null;
 	}
+
+	public static void RegisterEntity(String path, MODEntity entity) {
+		if(!entityDB.containsKey(path)) {
+			entityDB.put(path, entity);
+		} else {
+			EEMODLOADER.plugin.getLogger().info("Entity: " + path + " could not be loaded, it got registered twice!");
+		}
+	}
 	
-	public static ArrayList<EEMOD> getMods() {
-		return mods;
+	public static MODEntity ResolveEntity(String path) {
+		if(entityDB.containsKey(path)) {
+			return entityDB.get(path);
+		}
+		return null;
 	}
 	
 }

@@ -20,7 +20,7 @@ commands:
   permission-message: You do not have permission to use this command.
   usage: "/<command>"
  saveitem:
-  description: Save an item to file
+  description: Save an item to a file
   permission: EEMODLOADER.saveitem
   permission-message: You do not have permission to use this command.
   usage: "/<command> <itemname>"
@@ -29,6 +29,16 @@ commands:
   permission: EEMODLOADER.loaditem
   permission-message: You do not have permission to use this command.
   usage: "/<command> <itemname>"
+ saveentity:
+  description: Save an entity to a file
+  permission: EEMODLOADER.saveentity
+  permission-message: You do not have permission to use this command.
+  usage: "/<command> <itemname>"
+ loadentity:
+  description: Load an entity from a file
+  permission: EEMODLOADER.loadentity
+  permission-message: You do not have permission to use this command.
+  usage: "/<command> <entityname> [x] [y] [z]"
  setrarity:
   description: Set the rarity of an item
   permission: EEMODLOADER.setrarity

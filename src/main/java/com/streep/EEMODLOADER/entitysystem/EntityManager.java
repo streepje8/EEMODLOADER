@@ -26,6 +26,12 @@ public class EntityManager {
 		}
 	}
 	
+	public static void RegisterEntity(UUID id, EEEntity entity) {
+		if(entityMap.containsKey(id))
+			entityMap.remove(id);
+		entityMap.put(id, entity);
+	}
+	
 	public static EEEntity getEEEntity(Entity e) {
 		if(entityMap.containsKey(e.getUniqueId())) {
 			return entityMap.get(e.getUniqueId());

@@ -20,7 +20,7 @@ public class ModsHandler implements CommandHandler {
 	public void runAlways(CommandSender sender, Command command, String label, String[] arguments) {
 		sender.sendMessage(ChatUtil.format("&f=== &bMODS &f==="));
 		for(EEMOD mod : MODLOADER.getMods()) {
-			sender.sendMessage(ChatUtil.format(mod.displayName + " &r&fby: " + mod.author));
+			sender.sendMessage(ChatUtil.format(mod.displayName + " &r&fby: " + mod.author + " &r&fusage name: " + mod.name));
 		}
 	}
 }

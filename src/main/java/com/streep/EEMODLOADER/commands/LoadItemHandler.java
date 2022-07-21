@@ -56,6 +56,7 @@ public class LoadItemHandler implements CommandHandler {
 				sender.sendMessage(ChatUtil.format("&4Only players can use this command!"));
 			}
 		} else {
+			
 			sender.sendMessage(ChatUtil.format("&4Usage: /loaditem <name>"));
 		}
 	}
