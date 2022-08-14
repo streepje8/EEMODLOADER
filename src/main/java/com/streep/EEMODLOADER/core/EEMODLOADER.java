@@ -1,8 +1,10 @@
 package com.streep.EEMODLOADER.core;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginLoadOrder;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -46,11 +48,15 @@ public class EEMODLOADER extends JavaPlugin {
 	});
 	
 	public static EEMODLOADER plugin;
+	public static Server server;
+	public static Logger logger;
 	public EESettings settings = new EESettings();
 	
 	@Override
 	public void onEnable() {
 		plugin = this;
+		server = getServer();
+		logger = getLogger();
 		getLogger().info("Starting EE MOD LOADER");
 		if(!getDataFolder().exists()) {
 			getDataFolder().mkdirs();
