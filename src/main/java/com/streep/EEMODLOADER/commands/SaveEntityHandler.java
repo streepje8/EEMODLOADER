@@ -15,8 +15,6 @@ import com.streep.EEMODLOADER.entitysystem.EEEntity;
 import com.streep.EEMODLOADER.entitysystem.EntityManager;
 import com.streep.EEMODLOADER.utils.ChatUtil;
 import com.streep.EEMODLOADER.utils.JsonFile;
-
-@org.bukkit.plugin.java.annotation.command.Command(name = "saveentity", desc = "Save entity to file", permission = "EEMODLOADER.saveentity", permissionMessage = "You do not have permission to run this command!", usage = "/<command> <entityname>")
 public class SaveEntityHandler implements CommandHandler {
 	
 	@Override

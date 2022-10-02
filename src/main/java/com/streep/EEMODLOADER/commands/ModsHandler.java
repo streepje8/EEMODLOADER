@@ -7,8 +7,6 @@ import com.streep.EEMODLOADER.commands.core.CommandHandler;
 import com.streep.EEMODLOADER.modloader.EEMOD;
 import com.streep.EEMODLOADER.modloader.MODLOADER;
 import com.streep.EEMODLOADER.utils.ChatUtil;
-
-@org.bukkit.plugin.java.annotation.command.Command(name = "mods", desc = "List Mods", permission = "EEMODLOADER.mods", permissionMessage = "You do not have permission to run this command!", usage = "/<command>")
 public class ModsHandler implements CommandHandler {
 	
 	@Override

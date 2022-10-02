@@ -16,7 +16,6 @@ import com.streep.EEMODLOADER.utils.ChatUtil;
 import com.streep.EEMODLOADER.utils.JsonFile;
 import com.streep.EEMODLOADER.utils.SMath;
 
-@org.bukkit.plugin.java.annotation.command.Command(name = "loadentity", desc = "Load an entity", permission = "EEMODLOADER.loadentity", permissionMessage = "You do not have permission to run this command!", usage = "/<command> <entityname>")
 public class LoadEntityHandler implements CommandHandler {
 	
 	@Override

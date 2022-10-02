@@ -54,6 +54,11 @@ commands:
   permission: EEMODLOADER.test
   permission-message: You do not have permission to use this command.
   usage: "/<command>"
+ craft:
+  description: Craft Command
+  permission: EEMODLOADER.craft
+  permission-message: You do not have permission to use this command.
+  usage: "/<command>"
 permissions:
   EE.Basic:
    description: The Basic EE Loader Permissions

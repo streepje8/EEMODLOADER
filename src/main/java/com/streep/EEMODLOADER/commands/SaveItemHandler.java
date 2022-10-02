@@ -12,8 +12,6 @@ import com.streep.EEMODLOADER.core.EEMODLOADER;
 import com.streep.EEMODLOADER.itemsystem.EEItemStack;
 import com.streep.EEMODLOADER.utils.ChatUtil;
 import com.streep.EEMODLOADER.utils.JsonFile;
-
-@org.bukkit.plugin.java.annotation.command.Command(name = "saveitem", desc = "Save item to file", permission = "EEMODLOADER.saveitem", permissionMessage = "You do not have permission to run this command!", usage = "/<command> <itemname>")
 public class SaveItemHandler implements CommandHandler {
 	
 	@Override

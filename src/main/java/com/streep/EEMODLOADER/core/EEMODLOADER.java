@@ -6,15 +6,10 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.PluginLoadOrder;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.annotation.plugin.Description;
-import org.bukkit.plugin.java.annotation.plugin.LoadOn;
-import org.bukkit.plugin.java.annotation.plugin.Plugin;
-import org.bukkit.plugin.java.annotation.plugin.Website;
-import org.bukkit.plugin.java.annotation.plugin.author.Author;
 
 import com.streep.EEMODLOADER.commands.AddListenerHandler;
+import com.streep.EEMODLOADER.commands.CraftHandler;
 import com.streep.EEMODLOADER.commands.LoadEntityHandler;
 import com.streep.EEMODLOADER.commands.LoadItemHandler;
 import com.streep.EEMODLOADER.commands.ModsHandler;
@@ -28,12 +23,6 @@ import com.streep.EEMODLOADER.listeners.EEItemEventsListener;
 import com.streep.EEMODLOADER.listeners.EntityListener;
 import com.streep.EEMODLOADER.listeners.ItemListener;
 import com.streep.EEMODLOADER.modloader.MODLOADER;
-
-@Plugin(name="EEMODLOADER", version="1.0")
-@Description(desc = "The modloader for EE Server Side Mods")
-@LoadOn(loadOn = PluginLoadOrder.STARTUP)
-@Author(name = "streepje8")
-@Website(url = "https://github.com/streepje8/EEMODLOADER")
 public class EEMODLOADER extends JavaPlugin {
 
 	private final List<Command> commands = Arrays.asList(new Command[]{
@@ -44,7 +33,8 @@ public class EEMODLOADER extends JavaPlugin {
 			new Command("loadentity", new LoadEntityHandler()),
 			new Command("setrarity", new SetRarityHandler()),
 			new Command("addlistener", new AddListenerHandler()),
-			new Command("mods", new ModsHandler())
+			new Command("mods", new ModsHandler()),
+			new Command("craft", new CraftHandler())
 	});
 	
 	public static EEMODLOADER plugin;

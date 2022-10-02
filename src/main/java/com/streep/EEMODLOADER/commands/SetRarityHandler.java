@@ -10,7 +10,6 @@ import com.streep.EEMODLOADER.core.EEMODLOADER;
 import com.streep.EEMODLOADER.itemsystem.EEItemStack;
 import com.streep.EEMODLOADER.utils.ChatUtil;
 
-@org.bukkit.plugin.java.annotation.command.Command(name = "setrarity", desc = "Set Rarity Of An Item", permission = "EEMODLOADER.setrarity", permissionMessage = "You do not have permission to run this command!", usage = "/<command> <rarity>")
 public class SetRarityHandler implements CommandHandler {
 	
 	@Override

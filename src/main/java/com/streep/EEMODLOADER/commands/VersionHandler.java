@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import com.streep.EEMODLOADER.commands.core.CommandHandler;
 import com.streep.EEMODLOADER.utils.ChatUtil;
 
-@org.bukkit.plugin.java.annotation.command.Command(name = "version", desc = "Plugin Version", permission = "EEMODLOADER.version", permissionMessage = "You do not have permission to run this command!", usage = "/<command>")
 public class VersionHandler implements CommandHandler {
 	
 	@Override

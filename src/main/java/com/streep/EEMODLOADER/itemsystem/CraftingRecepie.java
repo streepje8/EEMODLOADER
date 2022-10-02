@@ -15,6 +15,19 @@ public class CraftingRecepie {
 		this.name = name;
 		this.result = result;
 	}
+	
+	public CraftingRecepie(JSONObject obj) {
+		name = obj.getString("Name");
+		shapeless = obj.getBoolean("Shapeless");
+		result = EEItemStack.FromJsonObject(obj.getJSONObject("Result"));
+		JSONArray ingredients = obj.getJSONArray("Ingredients");
+		for(int i = 0; i < ingredients.length(); i++) {
+			JSONObject ingredient = ingredients.getJSONObject(i);
+			int x = ingredient.getInt("X");
+			int y = ingredient.getInt("Y");
+			items[x][y] = EEItemStack.FromJsonObject(ingredient.getJSONObject("Item"));
+		}
+	}
 
 	public String getName() {
 		return name;

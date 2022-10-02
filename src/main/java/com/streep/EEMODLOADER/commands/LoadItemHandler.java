@@ -13,8 +13,6 @@ import com.streep.EEMODLOADER.modloader.MODItem;
 import com.streep.EEMODLOADER.modloader.MODLOADER;
 import com.streep.EEMODLOADER.utils.ChatUtil;
 import com.streep.EEMODLOADER.utils.JsonFile;
-
-@org.bukkit.plugin.java.annotation.command.Command(name = "loaditem", desc = "Load an item", permission = "EEMODLOADER.loaditem", permissionMessage = "You do not have permission to run this command!", usage = "/<command> <itemname>")
 public class LoadItemHandler implements CommandHandler {
 	
 	@Override

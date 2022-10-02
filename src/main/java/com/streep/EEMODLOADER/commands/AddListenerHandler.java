@@ -13,7 +13,6 @@ import com.streep.EEMODLOADER.itemsystem.EEItemStack;
 import com.streep.EEMODLOADER.utils.ChatUtil;
 import com.streep.EEMODLOADER.utils.JsonFile;
 
-@org.bukkit.plugin.java.annotation.command.Command(name = "addlistener", desc = "Add an event listener to an item", permission = "EEMODLOADER.addlistener", permissionMessage = "You do not have permission to run this command!", usage = "/<command> <type> <event> <eventarg>")
 public class AddListenerHandler implements CommandHandler {
 	
 	@Override
